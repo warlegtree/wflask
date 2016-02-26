@@ -13,17 +13,23 @@ from flask import make_response
 from flask.ext.script import Manager
 # import bootstrap
 from flask.ext.bootstrap import Bootstrap
+#moment
+from flask.ext.moment import Moment
+#import datetime
+from datetime import datetime
+
 
 
 
 app = Flask(__name__)
+moment = Moment(app)
 manager = Manager(app)
 bootstrap = Bootstrap(app)
 
 #index
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('index.html', current_time=datetime.utcnow())
 
 #request and response
 @app.route('/request')
@@ -48,6 +54,15 @@ def get_usr(id):
     if not user:
  	 abort(404)
     return '<h1> Hello, %s</h1>' % user.name
+
+#error 404
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
+
+@app.errorhandler(500)
+def internal_server_error(e):
+    return render_template('500.html'), 500
 
 #make_response
 @app.route('/ck')
