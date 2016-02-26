@@ -1,6 +1,6 @@
 #!/usr/bin/env python
-
-from flask import Flask
+#import render
+from flask import Flask, render_template
 # import request
 from flask import request
 #import redirect
@@ -11,14 +11,19 @@ from flask import abort
 from flask import make_response
 # use the flask-scripit 
 from flask.ext.script import Manager
+# import bootstrap
+from flask.ext.bootstrap import Bootstrap
+
+
 
 app = Flask(__name__)
 manager = Manager(app)
+bootstrap = Bootstrap(app)
 
 #index
 @app.route('/')
 def index():
-    return '<h1>Hello World!</h1>'
+    return render_template('index.html')
 
 #request and response
 @app.route('/request')
@@ -29,7 +34,7 @@ def req():
 #User, dynamic
 @app.route('/user/<name>')
 def user(name):
-    return '<h1>Hello, %s!</h1>' % name
+    return render_template('user.html', name = name)
 
 #redirect
 @app.route('/rd')
